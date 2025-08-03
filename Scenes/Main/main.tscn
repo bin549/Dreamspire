@@ -5,6 +5,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_qw60k"]
 font = ExtResource("2_lixft")
+font_size = 32
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -15,18 +16,17 @@ script = ExtResource("1_1r6ip")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
-offset_top = 8.0
-offset_right = 73.0
-offset_bottom = 77.0
-scale = Vector2(10.96, 8.44)
+offset_right = 1600.0
+offset_bottom = 1200.0
+scale = Vector2(1.299, 1)
 color = Color(0, 0, 0, 1)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 301.0
-offset_top = 280.0
-offset_right = 418.0
-offset_bottom = 303.0
+offset_left = 500.0
+offset_top = 575.0
+offset_right = 1012.0
+offset_bottom = 607.0
 text = "Press E to Start"
 label_settings = SubResource("LabelSettings_qw60k")
 horizontal_alignment = 1

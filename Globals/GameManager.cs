@@ -14,7 +14,7 @@ public partial class GameManager : Node {
         Instance = this;
         _levels.Add(
             1,
-            GD.Load<PackedScene>($"res://Scenes/Level/Level1.tscn")
+            GD.Load<PackedScene>($"res://Scenes/Level/level1.tscn")
         );
     }
 

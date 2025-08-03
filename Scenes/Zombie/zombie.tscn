@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvikimsbq0w17"]
+
+[ext_resource type="Script" uid="uid://bigoumt8p78br" path="res://Scenes/Zombie/Zombie.cs" id="1_lqh64"]
+[ext_resource type="Texture2D" uid="uid://dq1rgnwb6or14" path="res://Assets/Sprites/UrbanTheme2.png" id="2_yn7hu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rngln"]
+atlas = ExtResource("2_yn7hu")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fw7an"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rngln")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m63v1"]
+
+[node name="Zombie" type="CharacterBody2D"]
+script = ExtResource("1_lqh64")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fw7an")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_m63v1")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_m63v1")

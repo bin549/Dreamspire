@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://5qdfm3kpx7kp"]
+
+[ext_resource type="Script" uid="uid://j1ubniov1ak4" path="res://Scenes/Food/Food.cs" id="1_r715g"]
+[ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_sis0w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7re0b"]
+size = Vector2(32, 32)
+
+[node name="Food" type="Area2D"]
+script = ExtResource("1_r715g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_sis0w")
+region_enabled = true
+region_rect = Rect2(64, 64, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7re0b")

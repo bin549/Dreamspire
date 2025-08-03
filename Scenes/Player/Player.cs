@@ -5,12 +5,13 @@ public partial class Player : CharacterBody2D {
     [Export] public TileMapLayer TileLayer;
     [Export] public float MoveTime = 0.1f;
     private Vector2 _targetPosition;
-    private bool _isMoving = false;
+    private bool _isMoving = false; 
     private float _elapsedTime = 0f;
     public event Action<Vector2I> Moved; 
     public event Action<Vector2I> PathRecorded; 
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
+    [Export] public int CombatPower = 0;
 
     public override void _Ready() {
         _targetPosition = Position;
@@ -69,7 +70,6 @@ public partial class Player : CharacterBody2D {
     private bool BloodExistsAtPosition(Vector2 position) {
         Node parent = GetParent();
         if (parent == null) return false;
-        
         foreach (Node child in parent.GetChildren()) {
             if (child.Name == "Bloods" && child is Node2D bloodsNode) {
                 foreach (Node bloodChild in bloodsNode.GetChildren()) {
@@ -80,5 +80,10 @@ public partial class Player : CharacterBody2D {
             }
         }
         return false;
+    }
+
+    public void OnDie() {
+        AudioManager.Instance.PlaySound("die"); 
+        QueueFree();
     }
 }

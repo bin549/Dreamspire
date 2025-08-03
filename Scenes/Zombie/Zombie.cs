@@ -5,6 +5,7 @@ public partial class Zombie : CharacterBody2D {
     [Export] public TileMapLayer TileLayer;
     [Export] public Player TargetPlayer;
     [Export] public float MoveTime = 0.1f;
+    [Export] public float MoveDelay = 0.2f; 
 
     private Vector2 _targetPosition;
     private bool _isMoving = false;
@@ -27,6 +28,8 @@ public partial class Zombie : CharacterBody2D {
         Position = TileLayer.MapToLocal(TileLayer.LocalToMap(Position));
         TargetPlayer.PathRecorded += OnPlayerPathRecorded;
         TargetPlayer.Moved += OnPlayerMoved;
+        var area = GetNode<Area2D>("Area2D");
+        area.BodyEntered += OnBodyEntered;
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -88,7 +91,8 @@ public partial class Zombie : CharacterBody2D {
             StartMove(nextCell);
     }
 
-    private void StartMove(Vector2I targetCell) {
+    private async void StartMove(Vector2I targetCell) {
+        await ToSignal(GetTree().CreateTimer(MoveDelay), SceneTreeTimer.SignalName.Timeout);
         _targetPosition = TileLayer.MapToLocal(targetCell);
         _isMoving = true;
         _elapsedTime = 0f;
@@ -115,5 +119,24 @@ public partial class Zombie : CharacterBody2D {
         int sourceId = TileLayer.GetCellSourceId(cell);
         var tileData = TileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
+    }
+    
+    public void OnDie() {
+        Visible = false;
+        SetProcess(false);
+        SetPhysicsProcess(false);
+        AudioManager.Instance.PlaySound("kill"); 
+        _isMoving = false;
+    }
+    
+    private void OnBodyEntered(Node body) {
+        if (body is Player player) {
+            if (player.CombatPower > 0) {
+                player.CombatPower -= 1;
+                this.OnDie();
+            } else {
+                player.OnDie();
+            }
+        }
     }
 }
