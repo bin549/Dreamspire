@@ -9,6 +9,4 @@ public partial class Main : Control {
             GetTree().Quit();
         }
     }
-    
-    
 }

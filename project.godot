@@ -23,6 +23,8 @@ GameManager="*res://Globals/GameManager.cs"
 
 window/size/viewport_width=800
 window/size/viewport_height=600
+window/size/window_width_override=1600
+window/size/window_height_override=1200
 
 [dotnet]
 

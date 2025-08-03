@@ -9,6 +9,8 @@ font = ExtResource("2_lixft")
 [node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_1r6ip")
 
 [node name="ColorRect" type="ColorRect" parent="."]

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://pp3kme2h7y1n"]
+
+[ext_resource type="Texture2D" uid="uid://d6kbcj3oyje6" path="res://icon.svg" id="1_268bt"]
+
+[node name="Blood" type="Sprite2D"]
+modulate = Color(1, 0, 0, 0.592157)
+scale = Vector2(0.260937, 0.253125)
+texture = ExtResource("1_268bt")
