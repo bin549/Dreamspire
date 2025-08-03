@@ -11,7 +11,7 @@ public partial class Player : CharacterBody2D {
     public event Action<Vector2I> PathRecorded;
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
-    [Export] public int CombatPower = 0;
+    [Export] public bool isCombatPower = false;
 
     public override void _Ready() {
         _targetPosition = Position;
@@ -38,7 +38,7 @@ public partial class Player : CharacterBody2D {
         if (dir != Vector2.Zero) {
             Vector2I currentCell = TileLayer.LocalToMap(Position);
             Vector2I targetCell = currentCell + new Vector2I((int)dir.X, (int)dir.Y);
-            if (!IsBlocked(targetCell)) {
+            if (!this.IsBlocked(targetCell)) {
                 _targetPosition = TileLayer.MapToLocal(targetCell);
                 _isMoving = true;
                 _elapsedTime = 0f;
@@ -47,7 +47,7 @@ public partial class Player : CharacterBody2D {
                     _lastCell = targetCell;
                     PathRecorded?.Invoke(targetCell);
                 }
-                if (!BloodExistsAtPosition(Position)) {
+                if (!this.BloodExistsAtPosition(Position)) {
                     Node2D blood = _bloodScene.Instantiate<Node2D>();
                     blood.Position = Position;
                     Node bloodsNode = GetParent().GetNode("Bloods");

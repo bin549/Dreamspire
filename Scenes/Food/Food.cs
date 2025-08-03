@@ -7,7 +7,7 @@ public partial class Food : Area2D {
 
     private void OnBodyEntered(Node body) { 
         if (body is Player player) {
-            player.CombatPower += 1;
+            player.isCombatPower = true;
             AudioManager.Instance.PlaySound("eat"); 
             QueueFree(); 
         }

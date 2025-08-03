@@ -131,8 +131,7 @@ public partial class Zombie : CharacterBody2D {
     
     private void OnBodyEntered(Node body) {
         if (body is Player player) {
-            if (player.CombatPower > 0) {
-                player.CombatPower -= 1;
+            if (player.isCombatPower) {
                 this.OnDie();
             } else {
                 player.OnDie();
