@@ -138,8 +138,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Level1" type="Node2D"]
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("Levels")]
 script = ExtResource("1_rngln")
+Levels = []
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(268, 155)

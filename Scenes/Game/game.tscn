@@ -1,15 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://drjuwq3dwvgpw"]
+[gd_scene load_steps=4 format=3 uid="uid://drjuwq3dwvgpw"]
 
 [ext_resource type="PackedScene" uid="uid://bym5m4jtn4iu" path="res://Scenes/Level/level1.tscn" id="1_mv0hc"]
+[ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Game/Game.cs" id="1_qikps"]
+[ext_resource type="Script" uid="uid://cm4dpepbo5d5t" path="res://Scenes/Game/SceneTransition.cs" id="2_qxfds"]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("Levels", "_transition")]
+script = ExtResource("1_qikps")
+Levels = [NodePath("Level1"), NodePath("Level2"), NodePath("Level3")]
+_transition = NodePath("SceneTransition")
 
-[node name="Level1" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Level1" parent="." node_paths=PackedStringArray("Levels") instance=ExtResource("1_mv0hc")]
+Levels = [NodePath("."), NodePath("../Level2"), NodePath("../Level3")]
 
-[node name="Level2" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Exit" parent="Level1/Exits" index="0"]
+TargetLevelIndex = 1
+
+[node name="Level2" parent="." node_paths=PackedStringArray("Levels") instance=ExtResource("1_mv0hc")]
 visible = false
 position = Vector2(500, 0)
+Levels = [NodePath("../Level1"), NodePath("."), NodePath("../Level3")]
 
-[node name="Level3" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Level3" parent="." node_paths=PackedStringArray("Levels") instance=ExtResource("1_mv0hc")]
 visible = false
 position = Vector2(1000, 0)
+Levels = [NodePath("../Level1"), NodePath("../Level2"), NodePath(".")]
+
+[node name="SceneTransition" type="CanvasLayer" parent="."]
+script = ExtResource("2_qxfds")
+
+[node name="FadeRect" type="ColorRect" parent="SceneTransition"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[editable path="Level1"]
+[editable path="Level1/Zombies/Zombie3"]
+[editable path="Level1/Foods/Food2"]
