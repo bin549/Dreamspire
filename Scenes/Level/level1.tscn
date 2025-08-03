@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=4 uid="uid://bym5m4jtn4iu"]
 
-[ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Level/Game.cs" id="1_rngln"]
+[ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Game/Game.cs" id="1_rngln"]
 [ext_resource type="PackedScene" uid="uid://dskcg7jrhilt4" path="res://Scenes/Player/player.tscn" id="2_dulgr"]
 [ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_oump2"]
 [ext_resource type="AudioStream" uid="uid://brdo68y6qp6jn" path="res://Assets/Sounds/music.mp3" id="3_oump2"]
@@ -138,7 +138,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Level2" type="Node2D"]
+[node name="Level1" type="Node2D"]
 script = ExtResource("1_rngln")
 
 [node name="Camera2D" type="Camera2D" parent="."]
