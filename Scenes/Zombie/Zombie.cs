@@ -26,7 +26,7 @@ public partial class Zombie : CharacterBody2D {
         _targetPosition = Position;
         Position = TileLayer.MapToLocal(TileLayer.LocalToMap(Position));
         TargetPlayer.PathRecorded += OnPlayerPathRecorded;
-        TargetPlayer.Moved += OnPlayerMoved; 
+        TargetPlayer.Moved += OnPlayerMoved;
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -40,28 +40,35 @@ public partial class Zombie : CharacterBody2D {
         }
     }
 
-    // 记录玩家路径（发现玩家后立即记录，而不是等进入 ChasePath 再记录）
     private void OnPlayerPathRecorded(Vector2I cell) {
         if (_state == State.ChaseInit || _state == State.ChasePath)
             _pathQueue.Enqueue(cell);
     }
 
-    // 玩家每次移动后触发僵尸走一步
     private void OnPlayerMoved(Vector2I playerCell) {
         Vector2I zombieCell = TileLayer.LocalToMap(Position);
 
         if (_state == State.Idle) {
             if (CanSeePlayer(zombieCell, playerCell)) {
                 _state = State.ChaseInit;
-                _discoveryCell = playerCell; // 锁定发现位置
-                MoveOneStep(zombieCell, _discoveryCell); // 立刻走一步
+                _discoveryCell = playerCell;
+                MoveOneStep(zombieCell, _discoveryCell);
             }
         } else if (_state == State.ChaseInit) {
             if (zombieCell != _discoveryCell) {
                 MoveOneStep(zombieCell, _discoveryCell);
             } else {
-                // 到达发现位置后开始路径跟随
                 _state = State.ChasePath;
+                if (_pathQueue.Count > 0) {
+                    Vector2I nextCell = _pathQueue.Dequeue();
+                    if (!IsBlocked(nextCell))
+                        StartMove(nextCell);
+                    if (_pathQueue.Count > 0) {
+                        Vector2I nextCell2 = _pathQueue.Dequeue();
+                        if (!IsBlocked(nextCell2))
+                            StartMove(nextCell2);
+                    }
+                }
             }
         } else if (_state == State.ChasePath && _pathQueue.Count > 0) {
             Vector2I nextCell = _pathQueue.Dequeue();
@@ -76,7 +83,6 @@ public partial class Zombie : CharacterBody2D {
         else if (fromCell.X > toCell.X) dir = Vector2I.Left;
         else if (fromCell.Y < toCell.Y) dir = Vector2I.Down;
         else if (fromCell.Y > toCell.Y) dir = Vector2I.Up;
-
         Vector2I nextCell = fromCell + dir;
         if (!IsBlocked(nextCell))
             StartMove(nextCell);
