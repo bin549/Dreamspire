@@ -1,16 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://5qdfm3kpx7kp"]
+[gd_scene load_steps=4 format=3 uid="uid://bfmu62nsgqulb"]
 
-[ext_resource type="Script" uid="uid://j1ubniov1ak4" path="res://Scenes/Food/Food.cs" id="1_r715g"]
-[ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_sis0w"]
+[ext_resource type="Script" uid="uid://j1ubniov1ak4" path="res://Scenes/Food/Food.cs" id="1_hw7qn"]
+[ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_tvqpf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7re0b"]
 size = Vector2(32, 32)
 
 [node name="Food" type="Area2D"]
-script = ExtResource("1_r715g")
+script = ExtResource("1_hw7qn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_sis0w")
+texture = ExtResource("2_tvqpf")
 region_enabled = true
 region_rect = Rect2(64, 64, 32, 32)
 

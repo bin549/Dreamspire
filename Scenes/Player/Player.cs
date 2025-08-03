@@ -5,10 +5,10 @@ public partial class Player : CharacterBody2D {
     [Export] public TileMapLayer TileLayer;
     [Export] public float MoveTime = 0.1f;
     private Vector2 _targetPosition;
-    private bool _isMoving = false; 
+    private bool _isMoving = false;
     private float _elapsedTime = 0f;
-    public event Action<Vector2I> Moved; 
-    public event Action<Vector2I> PathRecorded; 
+    public event Action<Vector2I> Moved;
+    public event Action<Vector2I> PathRecorded;
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
     [Export] public int CombatPower = 0;
@@ -17,7 +17,7 @@ public partial class Player : CharacterBody2D {
         _targetPosition = Position;
         _lastCell = TileLayer.LocalToMap(Position);
         Position = TileLayer.MapToLocal(_lastCell);
-        _bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/blood.tscn");
+        _bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/Blood.tscn");
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -83,7 +83,7 @@ public partial class Player : CharacterBody2D {
     }
 
     public void OnDie() {
-        AudioManager.Instance.PlaySound("die"); 
+        AudioManager.Instance.PlaySound("die");
         QueueFree();
     }
 }

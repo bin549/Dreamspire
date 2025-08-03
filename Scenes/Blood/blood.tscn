@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://pp3kme2h7y1n"]
 
-[ext_resource type="Texture2D" uid="uid://cnvhtjda4orj3" path="res://Assets/Sprites/blood.png" id="1_268bt"]
+[ext_resource type="Texture2D" uid="uid://cnvhtjda4orj3" path="res://Assets/Sprites/blood.png" id="1_xfdn8"]
 
 [node name="Blood" type="Sprite2D"]
-modulate = Color(1, 0, 0, 0.592157)
+modulate = Color(0.426402, 1.62441e-07, 1.92523e-07, 0.592157)
 scale = Vector2(1.032, 1)
-texture = ExtResource("1_268bt")
+texture = ExtResource("1_xfdn8")

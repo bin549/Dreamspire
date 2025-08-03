@@ -1,11 +1,72 @@
-[gd_scene load_steps=3 format=3 uid="uid://dskcg7jrhilt4"]
+[gd_scene load_steps=12 format=3 uid="uid://bldwai1wadovd"]
 
-[ext_resource type="Script" uid="uid://dberti6gq00hl" path="res://Scenes/Player/Player.cs" id="1_uvnfx"]
+[ext_resource type="Script" uid="uid://dberti6gq00hl" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
+[ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_h54ih"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uvnfx"]
 
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_uvnfx")
+[sub_resource type="AtlasTexture" id="AtlasTexture_dulgr"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oump2"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xls7"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oef0f"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1rc3o"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwg34"]
+atlas = ExtResource("2_h54ih")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_llxq3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dulgr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oump2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xls7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oef0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1rc3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwg34")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oef0f"]
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TileLayer")]
+script = ExtResource("1_ft8w5")
+TileLayer = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_uvnfx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_llxq3")
+frame_progress = 0.619939
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_oef0f")
