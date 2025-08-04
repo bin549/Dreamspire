@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bldwai1wadovd"]
+[gd_scene load_steps=12 format=3 uid="uid://so5x4jwhsl76"]
 
 [ext_resource type="Script" uid="uid://dberti6gq00hl" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
 [ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_h54ih"]
@@ -57,14 +57,14 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oef0f"]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TileLayer")]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ft8w5")
-TileLayer = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_uvnfx")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_llxq3")
 frame_progress = 0.619939
 
