@@ -2,21 +2,21 @@ using Godot;
 using System;
 
 public partial class Player : CharacterBody2D {
-    [Export] public TileMapLayer TileLayer;
+    [Export] public TileMapLayer tileLayer;
     [Export] public float MoveTime = 0.1f;
     private Vector2 _targetPosition;
     private bool _isMoving = false;
     private float _elapsedTime = 0f;
-    public event Action<Vector2I> Moved;
-    public event Action<Vector2I> PathRecorded;
+    public event Action<Vector2I> moved;
+    public event Action<Vector2I> pathRecorded;
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
     [Export] public bool isCombatPower = false;
 
     public override void _Ready() {
         _targetPosition = Position;
-        _lastCell = TileLayer.LocalToMap(Position);
-        Position = TileLayer.MapToLocal(_lastCell);
+        _lastCell = tileLayer.LocalToMap(Position);
+        Position = tileLayer.MapToLocal(_lastCell);
         _bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/Blood.tscn");
     }
 
@@ -36,16 +36,16 @@ public partial class Player : CharacterBody2D {
         if (Input.IsActionJustPressed("ui_up")) dir = Vector2.Up;
         if (Input.IsActionJustPressed("ui_down")) dir = Vector2.Down;
         if (dir != Vector2.Zero) {
-            Vector2I currentCell = TileLayer.LocalToMap(Position);
+            Vector2I currentCell = tileLayer.LocalToMap(Position);
             Vector2I targetCell = currentCell + new Vector2I((int)dir.X, (int)dir.Y);
             if (!this.IsBlocked(targetCell)) {
-                _targetPosition = TileLayer.MapToLocal(targetCell);
+                _targetPosition = tileLayer.MapToLocal(targetCell);
                 _isMoving = true;
                 _elapsedTime = 0f;
-                Moved?.Invoke(targetCell);
+                moved?.Invoke(targetCell);
                 if (targetCell != _lastCell) {
                     _lastCell = targetCell;
-                    PathRecorded?.Invoke(targetCell);
+                    pathRecorded?.Invoke(targetCell);
                 }
                 if (!this.BloodExistsAtPosition(Position)) {
                     Node2D blood = _bloodScene.Instantiate<Node2D>();
@@ -62,8 +62,8 @@ public partial class Player : CharacterBody2D {
     }
 
     private bool IsBlocked(Vector2I cell) {
-        int sourceId = TileLayer.GetCellSourceId(cell);
-        var tileData = TileLayer.GetCellTileData(cell);
+        int sourceId = tileLayer.GetCellSourceId(cell);
+        var tileData = tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
     }
 

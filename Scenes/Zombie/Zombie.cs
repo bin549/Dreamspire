@@ -2,8 +2,8 @@ using Godot;
 using System.Collections.Generic;
 
 public partial class Zombie : CharacterBody2D {
-    [Export] public TileMapLayer TileLayer;
-    [Export] public Player TargetPlayer;
+    [Export] public TileMapLayer tileLayer;
+    [Export] public Player targetPlayer;
     [Export] public float MoveTime = 0.1f;
     [Export] public float MoveDelay = 0.2f; 
 
@@ -25,9 +25,9 @@ public partial class Zombie : CharacterBody2D {
 
     public override void _Ready() {
         _targetPosition = Position;
-        Position = TileLayer.MapToLocal(TileLayer.LocalToMap(Position));
-        TargetPlayer.PathRecorded += OnPlayerPathRecorded;
-        TargetPlayer.Moved += OnPlayerMoved;
+        Position = tileLayer.MapToLocal(tileLayer.LocalToMap(Position));
+        targetPlayer.pathRecorded += OnPlayerpathRecorded;
+        targetPlayer.moved += OnPlayermoved;
         var area = GetNode<Area2D>("Area2D");
         area.BodyEntered += OnBodyEntered;
     }
@@ -43,13 +43,13 @@ public partial class Zombie : CharacterBody2D {
         }
     }
 
-    private void OnPlayerPathRecorded(Vector2I cell) {
+    private void OnPlayerpathRecorded(Vector2I cell) {
         if (_state == State.ChaseInit || _state == State.ChasePath)
             _pathQueue.Enqueue(cell);
     }
 
-    private void OnPlayerMoved(Vector2I playerCell) {
-        Vector2I zombieCell = TileLayer.LocalToMap(Position);
+    private void OnPlayermoved(Vector2I playerCell) {
+        Vector2I zombieCell = tileLayer.LocalToMap(Position);
 
         if (_state == State.Idle) {
             if (CanSeePlayer(zombieCell, playerCell)) {
@@ -93,7 +93,7 @@ public partial class Zombie : CharacterBody2D {
 
     private async void StartMove(Vector2I targetCell) {
         await ToSignal(GetTree().CreateTimer(MoveDelay), SceneTreeTimer.SignalName.Timeout);
-        _targetPosition = TileLayer.MapToLocal(targetCell);
+        _targetPosition = tileLayer.MapToLocal(targetCell);
         _isMoving = true;
         _elapsedTime = 0f;
     }
@@ -116,8 +116,8 @@ public partial class Zombie : CharacterBody2D {
     }
 
     private bool IsBlocked(Vector2I cell) {
-        int sourceId = TileLayer.GetCellSourceId(cell);
-        var tileData = TileLayer.GetCellTileData(cell);
+        int sourceId = tileLayer.GetCellSourceId(cell);
+        var tileData = tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
     }
     

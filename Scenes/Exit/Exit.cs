@@ -1,7 +1,7 @@
 using Godot;
 
 public partial class Exit : Area2D {
-    [Export] public int TargetLevelIndex;
+    [Export] public int targetLevelIndex;
     private Game _game;
 
     public override void _Ready() {
@@ -12,7 +12,7 @@ public partial class Exit : Area2D {
     private async void OnBodyEntered(Node body) {
         if (body is Player) {
             AudioManager.Instance.PlaySound("exit");
-            await _game.SwitchLevel(TargetLevelIndex); 
+            await _game.SwitchLevel(targetLevelIndex); 
         }
     }
 }

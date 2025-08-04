@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://bym5m4jtn4iu"]
 
-[ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Game/Game.cs" id="1_qp1lj"]
+[ext_resource type="Script" uid="uid://dpk1eh0owr64t" path="res://Scenes/Level/Level.cs" id="1_qp1lj"]
 [ext_resource type="Texture2D" uid="uid://c7ge10m5tuw4j" path="res://Assets/Sprites/UrbanTheme.png" id="2_k2uda"]
 [ext_resource type="Script" uid="uid://d1k21ywchvdxb" path="res://Globals/AudioManager.cs" id="3_ksici"]
 [ext_resource type="AudioStream" uid="uid://brdo68y6qp6jn" path="res://Assets/Sounds/music.mp3" id="4_8gphe"]

@@ -2,7 +2,7 @@ using Godot;
 using System.Collections.Generic;
 
 public partial class GameManager : Node {
-    const int TotalLevels = 3;
+    const int totalLevels = 3;
 
     private Dictionary<int, PackedScene> _levels = new Dictionary<int, PackedScene>();
 
@@ -20,7 +20,7 @@ public partial class GameManager : Node {
 
     private void SetNextLevel() {
         _currentLevel++;
-        if (_currentLevel > TotalLevels) {
+        if (_currentLevel > totalLevels) {
             _currentLevel = 1;
         }
     }
