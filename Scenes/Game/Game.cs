@@ -48,4 +48,26 @@ public partial class Game : Node2D {
         this.player.GlobalPosition = new Vector2(markerGlobalPos.X, markerGlobalPos.Y);
         await _transition.FadeFromBlack(transitionTime);
     }
+
+    public async Task PlayFinalCameraAnimation() {
+        float minX = levelXPositions[0];
+        float maxX = levelXPositions[levelXPositions.Length - 1];
+        float centerX = (minX + maxX) * 0.5f;
+        Vector2 startOffset = camera.Offset;
+        Vector2 endOffset = new Vector2(centerX - 64, startOffset.Y);
+        Vector2 startZoom = camera.Zoom;
+        Vector2 endZoom = startZoom * 0.3f; 
+        float duration = 1.2f;
+        float t = 0f;
+        while (t < duration) {
+            t += (float)GetProcessDeltaTime();
+            float alpha = Mathf.Clamp(t / duration, 0f, 1f);
+            float eased = Mathf.Ease(alpha, 0.8f);
+            camera.Offset = startOffset.Lerp(endOffset, eased);
+            camera.Zoom = startZoom.Lerp(endZoom, eased);
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        }
+        camera.Offset = endOffset;
+        camera.Zoom = endZoom;
+    }
 }

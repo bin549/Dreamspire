@@ -12,6 +12,12 @@ public partial class Exit : Area2D {
     private async void OnBodyEntered(Node body) {
         if (body is Player) {
             AudioManager.Instance.PlaySound("exit");
+            int lastIndex = _game.levelXPositions.Length - 1;
+            bool isFinalLevelExit = _game.currentLevelIndex == lastIndex;
+            if (isFinalLevelExit) {
+                await _game.PlayFinalCameraAnimation();
+                return;
+            }
             await _game.SwitchLevel(targetLevelIndex); 
         }
     }
