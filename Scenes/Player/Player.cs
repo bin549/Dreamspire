@@ -18,7 +18,7 @@ public partial class Player : CharacterBody2D {
         this._lastCell = this.tileLayer.LocalToMap(playerLocalToTile);
         GlobalPosition = this.tileLayer.ToGlobal(this.tileLayer.MapToLocal(_lastCell));
         this._targetPosition = GlobalPosition;
-        this._bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/Blood.tscn");
+		this._bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/blood.tscn");
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -56,6 +56,7 @@ public partial class Player : CharacterBody2D {
 						bloodsNode.AddChild(blood);
 						blood.GlobalPosition = spawnGlobal;
 						blood.ZIndex = 0;
+						InitializeBloodSprite(blood);
 					}
 				}
             }
@@ -80,6 +81,17 @@ public partial class Player : CharacterBody2D {
 			}
 		}
 		return false;
+	}
+
+	private void InitializeBloodSprite(Node2D bloodNode) {
+		if (bloodNode is Sprite2D sprite) {
+			if (sprite.Texture == null) {
+				var tex = GD.Load<Texture2D>("res://Assets/Sprites/blood.png");
+				sprite.Texture = tex;
+			}
+			sprite.Modulate = new Color(0.7f, 0.05f, 0.05f, 0.6f);
+			sprite.Visible = true;
+		}
 	}
 
 	private Node2D GetBloodsContainer() {

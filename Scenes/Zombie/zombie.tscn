@@ -27,6 +27,7 @@ TargetPlayer = NodePath("")
 MoveDelay = 0.05
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_fw7an")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
