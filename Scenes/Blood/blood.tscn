@@ -1,8 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://o6vu6670ovt8"]
+[gd_scene load_steps=6 format=3 uid="uid://o6vu6670ovt8"]
 
 [ext_resource type="Texture2D" uid="uid://cnvhtjda4orj3" path="res://Assets/Sprites/blood.png" id="1_xfdn8"]
+[ext_resource type="Shader" path="res://Shader/Blood.gdshader" id="2_shader"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_blood"]
+seed = 12345
+frequency = 0.8
+fractal_octaves = 3
+fractal_gain = 0.5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_blood"]
+noise = SubResource("FastNoiseLite_blood")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blood"]
+shader = ExtResource("2_shader")
+shader_parameter/radius = 0.1
+shader_parameter/spread_speed = 0.12
+shader_parameter/blood_color = Color(0.6, 0.07, 0.07, 0.7)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_blood")
 
 [node name="Blood" type="Sprite2D"]
-modulate = Color(0.426402, 1.62441e-07, 1.92523e-07, 0.592157)
-scale = Vector2(1.032, 1)
+z_index = 0
+z_as_relative = false
+scale = Vector2(1, 1)
+modulate = Color(0.7, 0.05, 0.05, 0.6)
 texture = ExtResource("1_xfdn8")
+material = null

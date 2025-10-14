@@ -21,8 +21,7 @@ public partial class Game : Node2D {
             GD.PrintErr("⚠ levelXPositions 未设置，请在 Inspector 填写每个关卡的X坐标！");
             return;
         }
-        if (levelZooms == null || levelZooms.Length != levelXPositions.Length)
-        {
+        if (levelZooms == null || levelZooms.Length != levelXPositions.Length) {
             GD.PrintErr("⚠ levelZooms 未设置或数量与 levelXPositions 不一致！");
             return;
         }

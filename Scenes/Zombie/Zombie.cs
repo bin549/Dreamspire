@@ -108,7 +108,7 @@ public partial class Zombie : CharacterBody2D {
         } else if (fromCell.Y == toCell.Y) {
             int step = fromCell.X < toCell.X ? 1 : -1;
             for (int x = fromCell.X + step; x != toCell.X; x += step)
-                if (IsBlocked(new Vector2I(x, fromCell.Y)))
+                if (this.IsBlocked(new Vector2I(x, fromCell.Y)))
                     return false;
             return true;
         }

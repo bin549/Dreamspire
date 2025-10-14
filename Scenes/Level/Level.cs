@@ -9,6 +9,4 @@ public partial class Level : Node2D {
         this.tileMapLayer = GetNode<TileMapLayer>("TileMapLayer");
         this.marker2D = GetNode<Marker2D>("Entry");
     }
-
-
 }

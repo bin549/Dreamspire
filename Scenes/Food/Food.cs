@@ -12,4 +12,4 @@ public partial class Food : Area2D {
             QueueFree(); 
         }
     }
-}
+}   
