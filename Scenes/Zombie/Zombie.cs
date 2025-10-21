@@ -6,25 +6,20 @@ public partial class Zombie : CharacterBody2D {
     [Export] public Player targetPlayer;
     [Export] public float MoveTime = 0.1f;
     [Export] public float MoveDelay = 0.2f;
-
-    private Vector2 _targetPosition;
-    private bool _isMoving = false;
-    private float _elapsedTime = 0f;
-
+    private Vector2 targetPosition;
+    private bool isMoving = false;
+    private float elapsedTime = 0f;
     private Queue<Vector2I> _pathQueue = new Queue<Vector2I>();
-
     private enum State {
         Idle,
         ChaseInit,
         ChasePath
     }
-
     private State _state = State.Idle;
-
     private Vector2I _discoveryCell;
 
     public override void _Ready() {
-        _targetPosition = Position;
+        this.targetPosition = Position;
         Position = tileLayer.MapToLocal(tileLayer.LocalToMap(Position));
         targetPlayer.pathRecorded += OnPlayerpathRecorded;
         targetPlayer.moved += OnPlayermoved;
@@ -33,20 +28,20 @@ public partial class Zombie : CharacterBody2D {
     }
 
     public override void _PhysicsProcess(double delta) {
-        if (_isMoving) {
-            _elapsedTime += (float)delta;
-            Position = Position.Lerp(_targetPosition, _elapsedTime / MoveTime);
-            if (_elapsedTime >= MoveTime) {
-                Position = _targetPosition;
-                _isMoving = false;
+        if (this.isMoving) {
+            this.elapsedTime += (float)delta;
+            Position = Position.Lerp(this.targetPosition, this.elapsedTime / MoveTime);
+            if (this.elapsedTime >= MoveTime) {
+                Position = this.targetPosition;
+                this.isMoving = false;
             }
         }
     }
 
     public async void ForceReposition(Vector2I cell) {
         if (tileLayer == null) return;
-        _isMoving = false;
-        _elapsedTime = 0f;
+        this.isMoving = false;
+        this.elapsedTime = 0f;
         Vector2 from = Position;
         Vector2 to = tileLayer.MapToLocal(cell);
         float duration = Mathf.Max(MoveTime, 0.08f);
@@ -59,7 +54,7 @@ public partial class Zombie : CharacterBody2D {
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         }
         Position = to;
-        _targetPosition = Position;
+        this.targetPosition = Position;
         _pathQueue.Clear();
         _state = State.Idle;
     }
@@ -79,7 +74,7 @@ public partial class Zombie : CharacterBody2D {
             }
         } else if (_state == State.ChaseInit) {
             if (zombieCell != _discoveryCell) {
-                MoveOneStep(zombieCell, _discoveryCell);
+                this.MoveOneStep(zombieCell, _discoveryCell);
             } else {
                 _state = State.ChasePath;
                 if (_pathQueue.Count > 0) {
@@ -113,9 +108,9 @@ public partial class Zombie : CharacterBody2D {
 
     private async void StartMove(Vector2I targetCell) {
         await ToSignal(GetTree().CreateTimer(MoveDelay), SceneTreeTimer.SignalName.Timeout);
-        _targetPosition = tileLayer.MapToLocal(targetCell);
-        _isMoving = true;
-        _elapsedTime = 0f;
+        this.targetPosition = tileLayer.MapToLocal(targetCell);
+        this.isMoving = true;
+        this.elapsedTime = 0f;
     }
 
     private bool CanSeePlayer(Vector2I fromCell, Vector2I toCell) {
@@ -146,7 +141,7 @@ public partial class Zombie : CharacterBody2D {
         SetProcess(false);
         SetPhysicsProcess(false);
         AudioManager.Instance.PlaySound("kill");
-        _isMoving = false;
+        this.isMoving = false;
     }
 
     public void Revive() {

@@ -35,7 +35,6 @@ public partial class Game : Node2D {
     private TurnSnapshot _currentTurn;
     private bool _isTransitioning = false;
     private bool _undoGrace = false;
-
     public bool CanUndo => !_isTransitioning && _turnStack.Count > 0;
     public bool CanStartTurn => !_isTransitioning;
     public bool IsUndoGraceActive => _undoGrace;
@@ -65,14 +64,14 @@ public partial class Game : Node2D {
         this.player.ClearHistory();
         _turnStack.Clear();
         _currentTurn = null;
-        _isTransitioning = false;
+        this._isTransitioning = false;
         await _transition.FadeFromBlack(transitionTime);
     }
 
     public async Task SwitchLevel(int newIndex) {
         if (newIndex < 0 || newIndex >= levelXPositions.Length) return;
         if (newIndex == currentLevelIndex) return;
-        _isTransitioning = true;
+        this._isTransitioning = true;
         await _transition.FadeToBlack(transitionTime);
         this.currentLevelIndex = newIndex;
         this.camera.Offset = new Vector2(levelXPositions[currentLevelIndex], camera.Offset.Y);
@@ -84,11 +83,11 @@ public partial class Game : Node2D {
         _turnStack.Clear();
         _currentTurn = null;
         await _transition.FadeFromBlack(transitionTime);
-        _isTransitioning = false;
+        this._isTransitioning = false;
     }
 
     public async Task PlayFinalCameraAnimation() {
-        _isTransitioning = true;
+        this._isTransitioning = true;
         _turnStack.Clear();
         _currentTurn = null;
         float minX = levelXPositions[0];

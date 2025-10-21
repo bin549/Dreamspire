@@ -12,7 +12,7 @@ public partial class Player : CharacterBody2D {
     public event Action<Vector2I> pathRecorded;
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
-    private Stack<Vector2I> _moveHistory = new Stack<Vector2I>();
+    private Stack<Vector2I> moveHistory = new Stack<Vector2I>();
     [Export] public bool isCombatPower = false;
     private Game _gameRef;
     private bool _isUndoAnimating = false;
@@ -25,7 +25,7 @@ public partial class Player : CharacterBody2D {
         GlobalPosition = this.tileLayer.ToGlobal(this.tileLayer.MapToLocal(_lastCell));
         this._targetPosition = GlobalPosition;
 		this._bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/blood.tscn");
-        _moveHistory.Clear();
+        this.moveHistory.Clear();
         _gameRef = GetNodeOrNull<Game>("/root/Game");
     }
 
@@ -49,7 +49,7 @@ public partial class Player : CharacterBody2D {
             if (_gameRef != null && _gameRef.CanUndo) {
                 _gameRef.UndoLastTurnAsync();
             }
-            if (_moveHistory.Count > 0) _moveHistory.Pop();
+            if (this.moveHistory.Count > 0) this.moveHistory.Pop();
             return;
         }
         if (_isDead) return;
@@ -63,7 +63,7 @@ public partial class Player : CharacterBody2D {
             Vector2I targetCell = currentCell + new Vector2I((int)dir.X, (int)dir.Y);
             if (!this.IsBlocked(targetCell)) {
                 _gameRef?.BeginTurn(currentCell);
-				_moveHistory.Push(currentCell);
+				this.moveHistory.Push(currentCell);
 				_targetPosition = tileLayer.ToGlobal(tileLayer.MapToLocal(targetCell));
                 _isMoving = true;
                 _elapsedTime = 0f;
@@ -89,7 +89,7 @@ public partial class Player : CharacterBody2D {
     }
 
     public void ClearHistory() {
-        _moveHistory.Clear();
+        this.moveHistory.Clear();
     }
 
     public void SetToCellWithoutEvents(Vector2I cell) {
