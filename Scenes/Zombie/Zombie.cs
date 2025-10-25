@@ -43,6 +43,27 @@ public partial class Zombie : CharacterBody2D {
         }
     }
 
+    public async void ForceReposition(Vector2I cell) {
+        if (tileLayer == null) return;
+        _isMoving = false;
+        _elapsedTime = 0f;
+        Vector2 from = Position;
+        Vector2 to = tileLayer.MapToLocal(cell);
+        float duration = Mathf.Max(MoveTime, 0.08f);
+        float t = 0f;
+        while (t < duration) {
+            t += (float)GetProcessDeltaTime();
+            float alpha = Mathf.Clamp(t / duration, 0f, 1f);
+            float eased = Mathf.Ease(alpha, 0.8f);
+            Position = from.Lerp(to, eased);
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        }
+        Position = to;
+        _targetPosition = Position;
+        _pathQueue.Clear();
+        _state = State.Idle;
+    }
+
     private void OnPlayerpathRecorded(Vector2I cell) {
         if (_state == State.ChaseInit || _state == State.ChasePath)
             _pathQueue.Enqueue(cell);
@@ -128,14 +149,19 @@ public partial class Zombie : CharacterBody2D {
         AudioManager.Instance.PlaySound("kill"); 
         _isMoving = false;
     }
+
+    public void Revive() {
+        Visible = true;
+        SetProcess(true);
+        SetPhysicsProcess(true);
+    }
     
     private void OnBodyEntered(Node body) {
         if (body is Player player) {
-            if (player.isCombatPower) {
-                this.OnDie();
-            } else {
-                player.OnDie();
-            }
+            Game game = GetNodeOrNull<Game>("/root/Game");
+            if (game != null && game.IsUndoGraceActive) return;
+            if (player.isCombatPower) this.OnDie();
+            else player.OnDie();
         }
     }
 }

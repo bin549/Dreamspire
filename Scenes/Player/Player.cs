@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D {
     [Export] public TileMapLayer tileLayer;
@@ -11,7 +12,12 @@ public partial class Player : CharacterBody2D {
     public event Action<Vector2I> pathRecorded;
     private Vector2I _lastCell;
     private PackedScene _bloodScene;
+    private Stack<Vector2I> _moveHistory = new Stack<Vector2I>();
     [Export] public bool isCombatPower = false;
+    private Game _gameRef;
+    private bool _isUndoAnimating = false;
+    private bool _isDead = false;
+    public bool IsDead => _isDead;
 
     public override void _Ready() {
         Vector2 playerLocalToTile = this.tileLayer.ToLocal(GlobalPosition);
@@ -19,6 +25,8 @@ public partial class Player : CharacterBody2D {
         GlobalPosition = this.tileLayer.ToGlobal(this.tileLayer.MapToLocal(_lastCell));
         this._targetPosition = GlobalPosition;
 		this._bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/blood.tscn");
+        _moveHistory.Clear();
+        _gameRef = GetNodeOrNull<Game>("/root/Game");
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -28,18 +36,34 @@ public partial class Player : CharacterBody2D {
             if (_elapsedTime >= MoveTime) {
                 GlobalPosition = _targetPosition;
                 _isMoving = false;
+                if (!_isUndoAnimating) {
+                    _gameRef?.EndTurn();
+                } else {
+                    _isUndoAnimating = false;
+                }
             }
             return;
         }
         Vector2 dir = Vector2.Zero;
-        if (Input.IsActionJustPressed("ui_left")) dir = Vector2.Left;
-        if (Input.IsActionJustPressed("ui_right")) dir = Vector2.Right;
-        if (Input.IsActionJustPressed("ui_up")) dir = Vector2.Up;
-        if (Input.IsActionJustPressed("ui_down")) dir = Vector2.Down;
+        if (Input.IsActionJustPressed("undo_step")) {
+            if (_gameRef != null && _gameRef.CanUndo) {
+                _gameRef.UndoLastTurnAsync();
+            }
+            if (_moveHistory.Count > 0) _moveHistory.Pop();
+            return;
+        }
+        if (_isDead) return;
+        if (Input.IsActionJustPressed("move_left")) dir = Vector2.Left;
+        if (Input.IsActionJustPressed("move_right")) dir = Vector2.Right;
+        if (Input.IsActionJustPressed("move_up")) dir = Vector2.Up;
+        if (Input.IsActionJustPressed("move_down")) dir = Vector2.Down;
         if (dir != Vector2.Zero) {
-			Vector2I currentCell = tileLayer.LocalToMap(tileLayer.ToLocal(GlobalPosition));
+            if (_gameRef != null && !_gameRef.CanStartTurn) return;
+            Vector2I currentCell = tileLayer.LocalToMap(tileLayer.ToLocal(GlobalPosition));
             Vector2I targetCell = currentCell + new Vector2I((int)dir.X, (int)dir.Y);
             if (!this.IsBlocked(targetCell)) {
+                _gameRef?.BeginTurn(currentCell);
+				_moveHistory.Push(currentCell);
 				_targetPosition = tileLayer.ToGlobal(tileLayer.MapToLocal(targetCell));
                 _isMoving = true;
                 _elapsedTime = 0f;
@@ -57,10 +81,24 @@ public partial class Player : CharacterBody2D {
 						blood.GlobalPosition = spawnGlobal;
 						blood.ZIndex = 0;
 						InitializeBloodSprite(blood);
+                            _gameRef?.RegisterBlood(blood);
 					}
 				}
             }
         }
+    }
+
+    public void ClearHistory() {
+        _moveHistory.Clear();
+    }
+
+    public void SetToCellWithoutEvents(Vector2I cell) {
+        if (tileLayer == null) return;
+        _isUndoAnimating = true;
+        _targetPosition = tileLayer.ToGlobal(tileLayer.MapToLocal(cell));
+        _isMoving = true;
+        _elapsedTime = 0f;
+        _lastCell = cell;
     }
 
     private bool IsBlocked(Vector2I cell) {
@@ -108,7 +146,14 @@ public partial class Player : CharacterBody2D {
 	}
 
     public void OnDie() {
+        if (_isDead) return;
         AudioManager.Instance.PlaySound("die");
-        QueueFree();
+        _isDead = true;
+        Visible = false;
+    }
+
+    public void Revive() {
+        _isDead = false;
+        Visible = true;
     }
 }
