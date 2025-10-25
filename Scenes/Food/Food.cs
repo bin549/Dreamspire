@@ -5,14 +5,14 @@ public partial class Food : Area2D {
         BodyEntered += OnBodyEntered;
     }
 
-    private void OnBodyEntered(Node body) { 
+    private void OnBodyEntered(Node body) {
         if (body is Player player) {
             player.isCombatPower = true;
-            AudioManager.Instance.PlaySound("eat"); 
+            AudioManager.Instance.PlaySound("eat");
             Game game = GetNodeOrNull<Game>("/root/Game");
             string scenePath = (this.SceneFilePath != null && this.SceneFilePath != "") ? this.SceneFilePath : "res://Scenes/Food/food.tscn";
             game?.RegisterFoodPicked(scenePath, GlobalPosition);
-            QueueFree(); 
+            QueueFree();
         }
     }
-}   
+}

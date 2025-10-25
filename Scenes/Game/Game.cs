@@ -97,7 +97,7 @@ public partial class Game : Node2D {
         Vector2 startOffset = camera.Offset;
         Vector2 endOffset = new Vector2(centerX - 64, startOffset.Y);
         Vector2 startZoom = camera.Zoom;
-        Vector2 endZoom = startZoom * 0.3f; 
+        Vector2 endZoom = startZoom * 0.3f;
         float duration = 1.2f;
         float t = 0f;
         while (t < duration) {
@@ -151,23 +151,17 @@ public partial class Game : Node2D {
         foreach (Node2D blood in snap.bloodsAdded) {
             if (IsInstanceValid(blood)) blood.QueueFree();
         }
-
         player.isCombatPower = snap.playerPrevCombat;
-
         _undoGrace = true;
-
         if (player.IsDead) player.Revive();
-
         foreach (ZombieSnapshot zsnap in snap.zombieSnapshots) {
             Zombie z = GetNodeOrNull<Zombie>(zsnap.path);
             if (z != null) {
                 if (!zsnap.wasDead) z.Revive();
-                z.ForceReposition(zsnap.cell); // async transition inside
+                z.ForceReposition(zsnap.cell);
             }
         }
-
         player.SetToCellWithoutEvents(snap.playerPrevCell);
-
         if (snap.foodsPicked.Count > 0) {
             float wait = Mathf.Max(player.MoveTime, 0.08f) + 0.01f;
             await ToSignal(GetTree().CreateTimer(wait), SceneTreeTimer.SignalName.Timeout);
@@ -183,7 +177,6 @@ public partial class Game : Node2D {
                 }
             }
         }
-
         float grace = Mathf.Max(player.MoveTime, 0.08f) + 0.02f;
         await ToSignal(GetTree().CreateTimer(grace), SceneTreeTimer.SignalName.Timeout);
         _undoGrace = false;

@@ -18,7 +18,7 @@ public partial class Exit : Area2D {
                 await _game.PlayFinalCameraAnimation();
                 return;
             }
-            await _game.SwitchLevel(targetLevelIndex); 
+            await _game.SwitchLevel(targetLevelIndex);
         }
     }
 }

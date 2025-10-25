@@ -5,7 +5,7 @@ public partial class Zombie : CharacterBody2D {
     [Export] public TileMapLayer tileLayer;
     [Export] public Player targetPlayer;
     [Export] public float MoveTime = 0.1f;
-    [Export] public float MoveDelay = 0.2f; 
+    [Export] public float MoveDelay = 0.2f;
 
     private Vector2 _targetPosition;
     private bool _isMoving = false;
@@ -71,7 +71,6 @@ public partial class Zombie : CharacterBody2D {
 
     private void OnPlayermoved(Vector2I playerCell) {
         Vector2I zombieCell = tileLayer.LocalToMap(Position);
-
         if (_state == State.Idle) {
             if (CanSeePlayer(zombieCell, playerCell)) {
                 _state = State.ChaseInit;
@@ -141,12 +140,12 @@ public partial class Zombie : CharacterBody2D {
         var tileData = tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
     }
-    
+
     public void OnDie() {
         Visible = false;
         SetProcess(false);
         SetPhysicsProcess(false);
-        AudioManager.Instance.PlaySound("kill"); 
+        AudioManager.Instance.PlaySound("kill");
         _isMoving = false;
     }
 
@@ -155,7 +154,7 @@ public partial class Zombie : CharacterBody2D {
         SetProcess(true);
         SetPhysicsProcess(true);
     }
-    
+
     private void OnBodyEntered(Node body) {
         if (body is Player player) {
             Game game = GetNodeOrNull<Game>("/root/Game");
