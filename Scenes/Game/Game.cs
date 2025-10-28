@@ -147,7 +147,6 @@ public partial class Game : Node2D {
     public async Task UndoLastTurnAsync() {
         if (_turnStack.Count == 0) return;
         TurnSnapshot snap = _turnStack.Pop();
-
         foreach (Node2D blood in snap.bloodsAdded) {
             if (IsInstanceValid(blood)) blood.QueueFree();
         }
