@@ -7,7 +7,7 @@ public partial class Game : Node2D {
     [Export] public float[] levelXPositions;
     [Export] public Vector2[] levelZooms;
     [Export] public int currentLevelIndex = 0;
-    [Export] private SceneTransition _transition;
+    [Export] private SceneTransition transition;
     [Export] private float transitionTime = 0.5f;
     [Export] private Camera2D camera;
     [Export] private Player player;
@@ -31,18 +31,18 @@ public partial class Game : Node2D {
         public Vector2 globalPos;
     }
 
-    private Stack<TurnSnapshot> _turnStack = new Stack<TurnSnapshot>();
-    private TurnSnapshot _currentTurn;
-    private bool _isTransitioning = false;
-    private bool _undoGrace = false;
-    public bool CanUndo => !_isTransitioning && _turnStack.Count > 0;
-    public bool CanStartTurn => !_isTransitioning;
-    public bool IsUndoGraceActive => _undoGrace;
+    private Stack<TurnSnapshot> turnStack = new Stack<TurnSnapshot>();
+    private TurnSnapshot currentTurn;
+    private bool isTransitioning = false;
+    private bool undoGrace = false;
+    public bool CanUndo => !this.isTransitioning && this.turnStack.Count > 0;
+    public bool CanStartTurn => !this.isTransitioning;
+    public bool IsUndoGraceActive => this.undoGrace;
 
     public override async void _Ready() {
         RenderingServer.SetDefaultClearColor(Colors.Black);
-        if (_transition == null) {
-            GD.PrintErr("⚠ _transition 未设置，请在 Inspector 绑定 SceneTransition 节点！");
+        if (this.transition == null) {
+            GD.PrintErr("⚠ this.transition 未设置，请在 Inspector 绑定 SceneTransition 节点！");
             return;
         }
         if (levelXPositions == null || levelXPositions.Length == 0) {
@@ -62,17 +62,17 @@ public partial class Game : Node2D {
         Vector2 markerGlobalPos = this.levels[currentLevelIndex].marker2D.GlobalPosition;
         this.player.GlobalPosition = new Vector2(markerGlobalPos.X, markerGlobalPos.Y);
         this.player.ClearHistory();
-        _turnStack.Clear();
-        _currentTurn = null;
-        this._isTransitioning = false;
-        await _transition.FadeFromBlack(transitionTime);
+        this.turnStack.Clear();
+        this.currentTurn = null;
+        this.isTransitioning = false;
+        await this.transition.FadeFromBlack(transitionTime);
     }
 
     public async Task SwitchLevel(int newIndex) {
         if (newIndex < 0 || newIndex >= levelXPositions.Length) return;
         if (newIndex == currentLevelIndex) return;
-        this._isTransitioning = true;
-        await _transition.FadeToBlack(transitionTime);
+        this.isTransitioning = true;
+        await this.transition.FadeToBlack(transitionTime);
         this.currentLevelIndex = newIndex;
         this.camera.Offset = new Vector2(levelXPositions[currentLevelIndex], camera.Offset.Y);
         this.camera.Zoom = levelZooms[currentLevelIndex];
@@ -80,16 +80,16 @@ public partial class Game : Node2D {
         Vector2 markerGlobalPos = this.levels[currentLevelIndex].marker2D.GlobalPosition;
         this.player.GlobalPosition = new Vector2(markerGlobalPos.X, markerGlobalPos.Y);
         this.player.ClearHistory();
-        _turnStack.Clear();
-        _currentTurn = null;
-        await _transition.FadeFromBlack(transitionTime);
-        this._isTransitioning = false;
+        this.turnStack.Clear();
+        this.currentTurn = null;
+        await this.transition.FadeFromBlack(transitionTime);
+        this.isTransitioning = false;
     }
 
     public async Task PlayFinalCameraAnimation() {
-        this._isTransitioning = true;
-        _turnStack.Clear();
-        _currentTurn = null;
+        this.isTransitioning = true;
+        this.turnStack.Clear();
+        this.currentTurn = null;
         float minX = levelXPositions[0];
         float maxX = levelXPositions[levelXPositions.Length - 1];
         float centerX = (minX + maxX) * 0.5f;
@@ -112,7 +112,7 @@ public partial class Game : Node2D {
     }
 
     public void BeginTurn(Vector2I playerCurrentCell) {
-        _currentTurn = new TurnSnapshot {
+        this.currentTurn = new TurnSnapshot {
             playerPrevCell = playerCurrentCell,
             playerPrevCombat = player.isCombatPower
         };
@@ -122,35 +122,37 @@ public partial class Game : Node2D {
             foreach (Node child in zombiesNode.GetChildren()) {
                 if (child is Zombie z && z.tileLayer != null) {
                     Vector2I zCell = z.tileLayer.LocalToMap(z.Position);
-                    _currentTurn.zombieSnapshots.Add(new ZombieSnapshot { path = z.GetPath(), cell = zCell, wasDead = !z.Visible });
+                    this.currentTurn.zombieSnapshots.Add(new ZombieSnapshot
+                        { path = z.GetPath(), cell = zCell, wasDead = !z.Visible });
                 }
             }
         }
     }
 
     public void RegisterBlood(Node2D blood) {
-        if (_currentTurn != null) _currentTurn.bloodsAdded.Add(blood);
+        if (this.currentTurn != null) this.currentTurn.bloodsAdded.Add(blood);
     }
 
     public void RegisterFoodPicked(string scenePath, Vector2 foodGlobalPosition) {
-        if (_currentTurn != null) _currentTurn.foodsPicked.Add(new FoodPicked { scenePath = scenePath, globalPos = foodGlobalPosition });
+        if (this.currentTurn != null)
+            this.currentTurn.foodsPicked.Add(new FoodPicked { scenePath = scenePath, globalPos = foodGlobalPosition });
     }
 
     public void EndTurn() {
-        if (_currentTurn != null) {
-            _turnStack.Push(_currentTurn);
-            _currentTurn = null;
+        if (this.currentTurn != null) {
+            this.turnStack.Push(this.currentTurn);
+            this.currentTurn = null;
         }
     }
 
     public async Task UndoLastTurnAsync() {
-        if (_turnStack.Count == 0) return;
-        TurnSnapshot snap = _turnStack.Pop();
+        if (this.turnStack.Count == 0) return;
+        TurnSnapshot snap = this.turnStack.Pop();
         foreach (Node2D blood in snap.bloodsAdded) {
             if (IsInstanceValid(blood)) blood.QueueFree();
         }
         player.isCombatPower = snap.playerPrevCombat;
-        _undoGrace = true;
+        this.undoGrace = true;
         if (player.IsDead) player.Revive();
         foreach (ZombieSnapshot zsnap in snap.zombieSnapshots) {
             Zombie z = GetNodeOrNull<Zombie>(zsnap.path);
@@ -177,6 +179,6 @@ public partial class Game : Node2D {
         }
         float grace = Mathf.Max(player.MoveTime, 0.08f) + 0.02f;
         await ToSignal(GetTree().CreateTimer(grace), SceneTreeTimer.SignalName.Timeout);
-        _undoGrace = false;
+        this.undoGrace = false;
     }
 }

@@ -9,20 +9,22 @@ public partial class Zombie : CharacterBody2D {
     private Vector2 targetPosition;
     private bool isMoving = false;
     private float elapsedTime = 0f;
-    private Queue<Vector2I> _pathQueue = new Queue<Vector2I>();
+    private Queue<Vector2I> pathQueue = new Queue<Vector2I>();
+
     private enum State {
         Idle,
         ChaseInit,
         ChasePath
     }
-    private State _state = State.Idle;
-    private Vector2I _discoveryCell;
+
+    private State state = State.Idle;
+    private Vector2I discoveryCell;
 
     public override void _Ready() {
         this.targetPosition = Position;
-        Position = tileLayer.MapToLocal(tileLayer.LocalToMap(Position));
-        targetPlayer.pathRecorded += OnPlayerpathRecorded;
-        targetPlayer.moved += OnPlayermoved;
+        Position = this.tileLayer.MapToLocal(this.tileLayer.LocalToMap(Position));
+        this.targetPlayer.pathRecorded += OnPlayerpathRecorded;
+        this.targetPlayer.moved += OnPlayermoved;
         var area = GetNode<Area2D>("Area2D");
         area.BodyEntered += OnBodyEntered;
     }
@@ -30,8 +32,8 @@ public partial class Zombie : CharacterBody2D {
     public override void _PhysicsProcess(double delta) {
         if (this.isMoving) {
             this.elapsedTime += (float)delta;
-            Position = Position.Lerp(this.targetPosition, this.elapsedTime / MoveTime);
-            if (this.elapsedTime >= MoveTime) {
+            Position = Position.Lerp(this.targetPosition, this.elapsedTime / this.MoveTime);
+            if (this.elapsedTime >= this.MoveTime) {
                 Position = this.targetPosition;
                 this.isMoving = false;
             }
@@ -39,12 +41,12 @@ public partial class Zombie : CharacterBody2D {
     }
 
     public async void ForceReposition(Vector2I cell) {
-        if (tileLayer == null) return;
+        if (this.tileLayer == null) return;
         this.isMoving = false;
         this.elapsedTime = 0f;
         Vector2 from = Position;
-        Vector2 to = tileLayer.MapToLocal(cell);
-        float duration = Mathf.Max(MoveTime, 0.08f);
+        Vector2 to = this.tileLayer.MapToLocal(cell);
+        float duration = Mathf.Max(this.MoveTime, 0.08f);
         float t = 0f;
         while (t < duration) {
             t += (float)GetProcessDeltaTime();
@@ -55,43 +57,43 @@ public partial class Zombie : CharacterBody2D {
         }
         Position = to;
         this.targetPosition = Position;
-        _pathQueue.Clear();
-        _state = State.Idle;
+        this.pathQueue.Clear();
+        this.state = State.Idle;
     }
 
     private void OnPlayerpathRecorded(Vector2I cell) {
-        if (_state == State.ChaseInit || _state == State.ChasePath)
-            _pathQueue.Enqueue(cell);
+        if (this.state == State.ChaseInit || this.state == State.ChasePath)
+            this.pathQueue.Enqueue(cell);
     }
 
     private void OnPlayermoved(Vector2I playerCell) {
-        Vector2I zombieCell = tileLayer.LocalToMap(Position);
-        if (_state == State.Idle) {
+        Vector2I zombieCell = this.tileLayer.LocalToMap(Position);
+        if (this.state == State.Idle) {
             if (CanSeePlayer(zombieCell, playerCell)) {
-                _state = State.ChaseInit;
-                _discoveryCell = playerCell;
-                MoveOneStep(zombieCell, _discoveryCell);
+                this.state = State.ChaseInit;
+                this.discoveryCell = playerCell;
+                MoveOneStep(zombieCell, this.discoveryCell);
             }
-        } else if (_state == State.ChaseInit) {
-            if (zombieCell != _discoveryCell) {
-                this.MoveOneStep(zombieCell, _discoveryCell);
+        } else if (this.state == State.ChaseInit) {
+            if (zombieCell != this.discoveryCell) {
+                this.MoveOneStep(zombieCell, this.discoveryCell);
             } else {
-                _state = State.ChasePath;
-                if (_pathQueue.Count > 0) {
-                    Vector2I nextCell = _pathQueue.Dequeue();
+                this.state = State.ChasePath;
+                if (this.pathQueue.Count > 0) {
+                    Vector2I nextCell = this.pathQueue.Dequeue();
                     if (!IsBlocked(nextCell))
-                        StartMove(nextCell);
-                    if (_pathQueue.Count > 0) {
-                        Vector2I nextCell2 = _pathQueue.Dequeue();
+                        this.StartMove(nextCell);
+                    if (this.pathQueue.Count > 0) {
+                        Vector2I nextCell2 = this.pathQueue.Dequeue();
                         if (!IsBlocked(nextCell2))
-                            StartMove(nextCell2);
+                            this.StartMove(nextCell2);
                     }
                 }
             }
-        } else if (_state == State.ChasePath && _pathQueue.Count > 0) {
-            Vector2I nextCell = _pathQueue.Dequeue();
+        } else if (this.state == State.ChasePath && this.pathQueue.Count > 0) {
+            Vector2I nextCell = this.pathQueue.Dequeue();
             if (!IsBlocked(nextCell))
-                StartMove(nextCell);
+                this.StartMove(nextCell);
         }
     }
 
@@ -103,12 +105,12 @@ public partial class Zombie : CharacterBody2D {
         else if (fromCell.Y > toCell.Y) dir = Vector2I.Up;
         Vector2I nextCell = fromCell + dir;
         if (!IsBlocked(nextCell))
-            StartMove(nextCell);
+            this.StartMove(nextCell);
     }
 
     private async void StartMove(Vector2I targetCell) {
-        await ToSignal(GetTree().CreateTimer(MoveDelay), SceneTreeTimer.SignalName.Timeout);
-        this.targetPosition = tileLayer.MapToLocal(targetCell);
+        await ToSignal(GetTree().CreateTimer(this.MoveDelay), SceneTreeTimer.SignalName.Timeout);
+        this.targetPosition = this.tileLayer.MapToLocal(targetCell);
         this.isMoving = true;
         this.elapsedTime = 0f;
     }
@@ -131,8 +133,8 @@ public partial class Zombie : CharacterBody2D {
     }
 
     private bool IsBlocked(Vector2I cell) {
-        int sourceId = tileLayer.GetCellSourceId(cell);
-        var tileData = tileLayer.GetCellTileData(cell);
+        int sourceId = this.tileLayer.GetCellSourceId(cell);
+        var tileData = this.tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
     }
 

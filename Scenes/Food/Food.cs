@@ -10,7 +10,9 @@ public partial class Food : Area2D {
             player.isCombatPower = true;
             AudioManager.Instance.PlaySound("eat");
             Game game = GetNodeOrNull<Game>("/root/Game");
-            string scenePath = (this.SceneFilePath != null && this.SceneFilePath != "") ? this.SceneFilePath : "res://Scenes/Food/food.tscn";
+            string scenePath = (this.SceneFilePath != null && this.SceneFilePath != "")
+                ? this.SceneFilePath
+                : "res://Scenes/Food/food.tscn";
             game?.RegisterFoodPicked(scenePath, GlobalPosition);
             QueueFree();
         }
