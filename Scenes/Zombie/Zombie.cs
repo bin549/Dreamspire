@@ -69,7 +69,7 @@ public partial class Zombie : CharacterBody2D {
     private void OnPlayermoved(Vector2I playerCell) {
         Vector2I zombieCell = this.tileLayer.LocalToMap(Position);
         if (this.state == State.Idle) {
-            if (CanSeePlayer(zombieCell, playerCell)) {
+            if (this.CanSeePlayer(zombieCell, playerCell)) {
                 this.state = State.ChaseInit;
                 this.discoveryCell = playerCell;
                 MoveOneStep(zombieCell, this.discoveryCell);
@@ -81,18 +81,18 @@ public partial class Zombie : CharacterBody2D {
                 this.state = State.ChasePath;
                 if (this.pathQueue.Count > 0) {
                     Vector2I nextCell = this.pathQueue.Dequeue();
-                    if (!IsBlocked(nextCell))
+                    if (!this.IsBlocked(nextCell))
                         this.StartMove(nextCell);
                     if (this.pathQueue.Count > 0) {
                         Vector2I nextCell2 = this.pathQueue.Dequeue();
-                        if (!IsBlocked(nextCell2))
+                        if (!this.IsBlocked(nextCell2))
                             this.StartMove(nextCell2);
                     }
                 }
             }
         } else if (this.state == State.ChasePath && this.pathQueue.Count > 0) {
             Vector2I nextCell = this.pathQueue.Dequeue();
-            if (!IsBlocked(nextCell))
+            if (!this.IsBlocked(nextCell))
                 this.StartMove(nextCell);
         }
     }
@@ -104,7 +104,7 @@ public partial class Zombie : CharacterBody2D {
         else if (fromCell.Y < toCell.Y) dir = Vector2I.Down;
         else if (fromCell.Y > toCell.Y) dir = Vector2I.Up;
         Vector2I nextCell = fromCell + dir;
-        if (!IsBlocked(nextCell))
+        if (!this.IsBlocked(nextCell))
             this.StartMove(nextCell);
     }
 
@@ -119,7 +119,7 @@ public partial class Zombie : CharacterBody2D {
         if (fromCell.X == toCell.X) {
             int step = fromCell.Y < toCell.Y ? 1 : -1;
             for (int y = fromCell.Y + step; y != toCell.Y; y += step)
-                if (IsBlocked(new Vector2I(fromCell.X, y)))
+                if (this.IsBlocked(new Vector2I(fromCell.X, y)))
                     return false;
             return true;
         } else if (fromCell.Y == toCell.Y) {
@@ -132,7 +132,7 @@ public partial class Zombie : CharacterBody2D {
         return false;
     }
 
-    private bool IsBlocked(Vector2I cell) {
+    private bool this.IsBlocked(Vector2I cell) {
         int sourceId = this.tileLayer.GetCellSourceId(cell);
         var tileData = this.tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;
