@@ -1,47 +1,47 @@
-[gd_scene load_steps=9 format=4 uid="uid://krdf8v63t317"]
+[gd_scene format=4 uid="uid://krdf8v63t317"]
 
 [ext_resource type="PackedScene" uid="uid://bym5m4jtn4iu" path="res://Scenes/Level/Level.tscn" id="1_mv0hc"]
 [ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Game/Game.cs" id="1_qikps"]
-[ext_resource type="PackedScene" uid="uid://dthtxqqhrrw1n" path="res://Scenes/Zombie/Zombie.tscn" id="3_y3kpf"]
-[ext_resource type="PackedScene" uid="uid://bfmu62nsgqulb" path="res://Scenes/Food/Food.tscn" id="4_3k6gv"]
+[ext_resource type="PackedScene" uid="uid://dthtxqqhrrw1n" path="res://Scenes/Zombie/zombie.tscn" id="3_y3kpf"]
+[ext_resource type="PackedScene" uid="uid://bfmu62nsgqulb" path="res://Scenes/Food/food.tscn" id="4_3k6gv"]
 [ext_resource type="PackedScene" uid="uid://so5x4jwhsl76" path="res://Scenes/Player/player.tscn" id="4_i1e5p"]
 [ext_resource type="PackedScene" uid="uid://gjd1wknydfu6" path="res://Scenes/Exit/Exit.tscn" id="5_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://dlsj7gbydauee" path="res://Scenes/SceneTransition/SceneTransition.tscn" id="7_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://ch3wopce3vtcw" path="res://Scenes/GameUi/GameUi.tscn" id="8_gvja8"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("levels", "_transition", "camera", "player")]
+[node name="Game" type="Node2D" unique_id=1713796691 node_paths=PackedStringArray("levels", "transition", "camera", "player")]
 script = ExtResource("1_qikps")
 levels = [NodePath("Level1"), NodePath("Level2"), NodePath("Level3")]
 levelXPositions = PackedFloat32Array(0, 580, 1188)
 levelZooms = PackedVector2Array(3, 3, 2.5, 2.5, 3, 3)
-_transition = NodePath("SceneTransition")
+transition = NodePath("SceneTransition")
 transitionTime = 0.2
 camera = NodePath("Camera")
 player = NodePath("Player")
 
-[node name="Level1" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Level1" parent="." unique_id=1984779235 instance=ExtResource("1_mv0hc")]
 
 [node name="Entry" parent="Level1" index="1"]
 position = Vector2(80, 16)
 
-[node name="Zombie1" parent="Level1/Zombies" index="0" node_paths=PackedStringArray("tileLayer", "targetPlayer") instance=ExtResource("3_y3kpf")]
+[node name="Zombie1" parent="Level1/Zombies" index="0" unique_id=955409945 node_paths=PackedStringArray("tileLayer", "targetPlayer") instance=ExtResource("3_y3kpf")]
 position = Vector2(208, 144)
 tileLayer = NodePath("../../TileMapLayer")
 targetPlayer = NodePath("../../../Player")
 
-[node name="Zombie2" parent="Level1/Zombies" index="1" node_paths=PackedStringArray("tileLayer", "targetPlayer") instance=ExtResource("3_y3kpf")]
+[node name="Zombie2" parent="Level1/Zombies" index="1" unique_id=1761168524 node_paths=PackedStringArray("tileLayer", "targetPlayer") instance=ExtResource("3_y3kpf")]
 position = Vector2(208, 240)
 tileLayer = NodePath("../../TileMapLayer")
 targetPlayer = NodePath("../../../Player")
 
-[node name="Food" parent="Level1/Foods" index="0" instance=ExtResource("4_3k6gv")]
+[node name="Food" parent="Level1/Foods" index="0" unique_id=1746800069 instance=ExtResource("4_3k6gv")]
 position = Vector2(208, 16)
 
-[node name="Exit" parent="Level1/Exits" index="0" instance=ExtResource("5_1q8bt")]
+[node name="Exit" parent="Level1/Exits" index="0" unique_id=674680754 instance=ExtResource("5_1q8bt")]
 position = Vector2(240, 240)
 targetLevelIndex = 1
 
-[node name="Level2" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Level2" parent="." unique_id=1597609294 instance=ExtResource("1_mv0hc")]
 position = Vector2(544, 0)
 
 [node name="TileMapLayer" parent="Level2" index="0"]
@@ -50,11 +50,11 @@ tile_map_data = PackedByteArray("AAACAAAAAAAAAAQAAAACAAEAAAABAAQAAAACAAIAAAABAAM
 [node name="Entry" parent="Level2" index="1"]
 position = Vector2(304, 16)
 
-[node name="Exit" parent="Level2/Exits" index="0" instance=ExtResource("5_1q8bt")]
+[node name="Exit" parent="Level2/Exits" index="0" unique_id=1925203987 instance=ExtResource("5_1q8bt")]
 position = Vector2(208, 112)
 targetLevelIndex = 2
 
-[node name="Level3" parent="." instance=ExtResource("1_mv0hc")]
+[node name="Level3" parent="." unique_id=1091640839 instance=ExtResource("1_mv0hc")]
 position = Vector2(1184, 0)
 
 [node name="TileMapLayer" parent="Level3" index="0"]
@@ -63,20 +63,20 @@ tile_map_data = PackedByteArray("AAACAAAAAAABAAMAAAACAAEAAAABAAMAAAACAAIAAAABAAM
 [node name="Entry" parent="Level3" index="1"]
 position = Vector2(48, 112)
 
-[node name="Exit" parent="Level3/Exits" index="0" instance=ExtResource("5_1q8bt")]
+[node name="Exit" parent="Level3/Exits" index="0" unique_id=1330417589 instance=ExtResource("5_1q8bt")]
 position = Vector2(272, 16)
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." unique_id=1472723702]
 position = Vector2(233, 81)
 offset = Vector2(-16, 48)
 zoom = Vector2(3, 3)
 
-[node name="SceneTransition" parent="." instance=ExtResource("7_1q8bt")]
+[node name="SceneTransition" parent="." unique_id=722113797 instance=ExtResource("7_1q8bt")]
 
-[node name="Player" parent="." node_paths=PackedStringArray("tileLayer") instance=ExtResource("4_i1e5p")]
+[node name="Player" parent="." unique_id=673926335 node_paths=PackedStringArray("tileLayer") instance=ExtResource("4_i1e5p")]
 tileLayer = NodePath("../Level1/TileMapLayer")
 
-[node name="GameUi" parent="." instance=ExtResource("8_gvja8")]
+[node name="GameUi" parent="." unique_id=633500730 instance=ExtResource("8_gvja8")]
 
 [editable path="Level1"]
 [editable path="Level2"]
