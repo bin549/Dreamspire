@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://ch3wopce3vtcw"]
+[gd_scene format=3 uid="uid://ch3wopce3vtcw"]
 
 [ext_resource type="Texture2D" uid="uid://u0fwqserne6c" path="res://Assets/Sprites/UI/Attack.png" id="1_anb74"]
 [ext_resource type="FontFile" uid="uid://bmfn1y5ecg0kv" path="res://Assets/Fonts/PressStart2P-Regular.ttf" id="2_anolp"]
@@ -6,10 +6,10 @@
 [sub_resource type="LabelSettings" id="LabelSettings_3586x"]
 font = ExtResource("2_anolp")
 
-[node name="GameUi" type="CanvasLayer"]
+[node name="GameUi" type="CanvasLayer" unique_id=945402413]
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=203087037]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -23,24 +23,24 @@ grow_horizontal = 0
 grow_vertical = 2
 alignment = 2
 
-[node name="HBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=774252821]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 12
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=284964254]
 layout_mode = 2
 texture = ExtResource("1_anb74")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=97474577]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1299820617]
 layout_mode = 2
 text = "footstep"
 label_settings = SubResource("LabelSettings_3586x")
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2075517743]
 layout_mode = 2
 text = "x 23"
 label_settings = SubResource("LabelSettings_3586x")

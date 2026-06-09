@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bejeofkri48kv"]
+[gd_scene format=3 uid="uid://bejeofkri48kv"]
 
 [ext_resource type="Script" uid="uid://blu1qy8boducq" path="res://Scenes/Main/Main.cs" id="1_1r6ip"]
 [ext_resource type="FontFile" uid="uid://bmfn1y5ecg0kv" path="res://Assets/Fonts/PressStart2P-Regular.ttf" id="2_lixft"]
@@ -7,26 +7,39 @@
 font = ExtResource("2_lixft")
 font_size = 32
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" unique_id=59690349]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_1r6ip")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=743436601]
 layout_mode = 1
-offset_right = 1600.0
-offset_bottom = 1200.0
-scale = Vector2(1.299, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 500.0
-offset_top = 575.0
-offset_right = 1012.0
-offset_bottom = 607.0
+[node name="Label" type="Label" parent="." unique_id=1922591160]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Press E to Start"
 label_settings = SubResource("LabelSettings_qw60k")
 horizontal_alignment = 1

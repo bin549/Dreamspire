@@ -132,7 +132,7 @@ public partial class Zombie : CharacterBody2D {
         return false;
     }
 
-    private bool this.IsBlocked(Vector2I cell) {
+    private bool IsBlocked(Vector2I cell) {
         int sourceId = this.tileLayer.GetCellSourceId(cell);
         var tileData = this.tileLayer.GetCellTileData(cell);
         return sourceId != -1 && tileData != null && tileData.GetCollisionPolygonsCount(0) > 0;

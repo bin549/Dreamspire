@@ -24,7 +24,7 @@ public partial class Player : CharacterBody2D {
         this.lastCell = this.tileLayer.LocalToMap(playerLocalToTile);
         GlobalPosition = this.tileLayer.ToGlobal(this.tileLayer.MapToLocal(this.lastCell));
         this.targetPosition = GlobalPosition;
-        this.bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/blood.tscn");
+        this.bloodScene = GD.Load<PackedScene>("res://Scenes/Blood/Blood.tscn");
         this.moveHistory.Clear();
         this.gameRef = GetNodeOrNull<Game>("/root/Game");
     }

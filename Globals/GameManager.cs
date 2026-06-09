@@ -10,10 +10,7 @@ public partial class GameManager : Node {
 
     public override void _Ready() {
         Instance = this;
-        levels.Add(
-            1,
-            GD.Load<PackedScene>($"res://Scenes/Game/game.tscn")
-        );
+        levels.Add(1, GD.Load<PackedScene>($"res://Scenes/Game/Game.tscn"));
     }
 
     private void SetNextLevel() {

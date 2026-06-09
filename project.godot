@@ -17,7 +17,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Dreamspire"
 run/main_scene="uid://bejeofkri48kv"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/image="uid://b8t30yupeuobi"
+config/icon="uid://bfy0gqqoh2n12"
 
 [autoload]
 
@@ -25,10 +26,12 @@ GameManager="*res://Globals/GameManager.cs"
 
 [display]
 
-window/size/viewport_width=800
-window/size/viewport_height=600
+window/size/viewport_width=1600
+window/size/viewport_height=1200
+window/size/mode=4
 window/size/window_width_override=1600
 window/size/window_height_override=1200
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
