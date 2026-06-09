@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://gjd1wknydfu6" path="res://Scenes/Exit/Exit.tscn" id="5_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://dlsj7gbydauee" path="res://Scenes/SceneTransition/SceneTransition.tscn" id="7_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://ch3wopce3vtcw" path="res://Scenes/GameUi/GameUi.tscn" id="8_gvja8"]
+[ext_resource type="PackedScene" path="res://Scenes/PauseMenu/PauseMenu.tscn" id="9_jx8ha"]
 
 [node name="Game" type="Node2D" unique_id=1713796691 node_paths=PackedStringArray("levels", "transition", "camera", "player")]
 script = ExtResource("1_qikps")
@@ -77,6 +78,8 @@ zoom = Vector2(3, 3)
 tileLayer = NodePath("../Level1/TileMapLayer")
 
 [node name="GameUi" parent="." unique_id=633500730 instance=ExtResource("8_gvja8")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("9_jx8ha")]
 
 [editable path="Level1"]
 [editable path="Level2"]
