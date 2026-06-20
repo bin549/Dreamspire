@@ -10,7 +10,13 @@ public partial class GameManager : Node {
 
     public override void _Ready() {
         Instance = this;
-        levels.Add(1, GD.Load<PackedScene>($"res://Scenes/Game/Game.tscn"));
+        PackedScene gameScene = GD.Load<PackedScene>("res://Scenes/Game/game.tscn");
+        if (gameScene == null) {
+            GD.PushError("Failed to load game scene: res://Scenes/Game/game.tscn");
+            return;
+        }
+
+        levels.Add(1, gameScene);
     }
 
     private void SetNextLevel() {
@@ -22,6 +28,11 @@ public partial class GameManager : Node {
 
     public static void LoadNextLevelScene() {
         Instance.SetNextLevel();
-        Instance.GetTree().ChangeSceneToPacked(Instance.levels[Instance.currentLevel]);
+        if (!Instance.levels.TryGetValue(Instance.currentLevel, out PackedScene scene) || scene == null) {
+            GD.PushError($"Level {Instance.currentLevel} is not loaded.");
+            return;
+        }
+
+        Instance.GetTree().ChangeSceneToPacked(scene);
     }
 }
