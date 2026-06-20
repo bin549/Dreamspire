@@ -10,9 +10,9 @@ public partial class GameManager : Node {
 
     public override void _Ready() {
         Instance = this;
-        PackedScene gameScene = GD.Load<PackedScene>("res://Scenes/Game/game.tscn");
+        PackedScene gameScene = GD.Load<PackedScene>("res://Scenes/Game/Game.tscn");
         if (gameScene == null) {
-            GD.PushError("Failed to load game scene: res://Scenes/Game/game.tscn");
+            GD.PushError("Failed to load game scene: res://Scenes/Game/Game.tscn");
             return;
         }
 

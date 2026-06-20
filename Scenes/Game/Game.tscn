@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b8vbk8gop4djd" path="res://Scenes/Game/Game.cs" id="1_qikps"]
 [ext_resource type="PackedScene" uid="uid://dthtxqqhrrw1n" path="res://Scenes/Zombie/Zombie.tscn" id="3_y3kpf"]
 [ext_resource type="PackedScene" uid="uid://bfmu62nsgqulb" path="res://Scenes/Food/Food.tscn" id="4_3k6gv"]
-[ext_resource type="PackedScene" uid="uid://so5x4jwhsl76" path="res://Scenes/Player/player.tscn" id="4_i1e5p"]
+[ext_resource type="PackedScene" uid="uid://so5x4jwhsl76" path="res://Scenes/Player/Player.tscn" id="4_i1e5p"]
 [ext_resource type="PackedScene" uid="uid://gjd1wknydfu6" path="res://Scenes/Exit/Exit.tscn" id="5_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://dlsj7gbydauee" path="res://Scenes/SceneTransition/SceneTransition.tscn" id="7_1q8bt"]
 [ext_resource type="PackedScene" uid="uid://ch3wopce3vtcw" path="res://Scenes/GameUi/GameUi.tscn" id="8_gvja8"]

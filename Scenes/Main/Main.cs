@@ -5,14 +5,14 @@ public partial class Main : Control {
 
     public override void _Input(InputEvent @event) {
         if (IsStartPressed(@event)) {
+            GetViewport()?.SetInputAsHandled();
             StartGame();
-            GetViewport().SetInputAsHandled();
             return;
         }
 
         if (@event.IsActionPressed("quit")) {
+            GetViewport()?.SetInputAsHandled();
             GetTree().Quit();
-            GetViewport().SetInputAsHandled();
         }
     }
 
