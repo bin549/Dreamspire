@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Dreamspire"
-run/main_scene="uid://bejeofkri48kv"
+run/main_scene="res://Scenes/Main/Main.tscn"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 boot_splash/image="uid://b8t30yupeuobi"
 config/icon="uid://egj4y6nh30fx"
